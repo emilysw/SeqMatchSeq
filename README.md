@@ -1,50 +1,7 @@
 # SeqMatchSeq
-Implementations of three models described in the three papers related to sequence matching:
-
-- [Learning Natural Language Inference with Lstm](https://arxiv.org/abs/1512.08849) by Shuohang Wang, Jing Jiang
 
 - [Machine Comprehension Using Match-LSTM and Answer Pointer](https://arxiv.org/abs/1608.07905) by Shuohang Wang, Jing Jiang
 
-- [A Compare-Aggregate Model for Matching Text Sequences](https://arxiv.org/abs/1611.01747) by Shuohang Wang, Jing Jiang
-
-# Learning Natural Language Inference with Lstm
-
-### Requirements
-- [Torch7](https://github.com/torch/torch7)
-- [nn](https://github.com/torch/nn)
-- [nngraph](https://github.com/torch/nngraph)
-- [optim](https://github.com/torch/optim)
-- Python 2.7
-
-### Datasets
-- [The Stanford Natural Language Inference (SNLI) Corpus](http://nlp.stanford.edu/projects/snli/)
-- [GloVe: Global Vectors for Word Representation](http://nlp.stanford.edu/data/glove.840B.300d.zip)
-
-### Usage
-```
-sh preprocess.sh snli
-cd main
-th main.lua -task snli -model mLSTM -dropoutP 0.3 -num_classes 3
-```
-
-`sh preprocess.sh snli` will download the datasets and preprocess the SNLI corpus into the files 
-(train.txt dev.txt test.txt) under the path "data/snli/sequence" with the format:
-
->sequence1(premise) \t sequence2(hypothesis) \t label(from 1 to num_classes) \n
-
-`main.lua` will first initialize the preprossed data and word embeddings into a Torch format and 
-then run the alogrithm. "dropoutP" is the main prarameter we tuned.
-
-### Docker
-You may try to use Docker for running the code.
-- [Docker Install](https://github.com/codalab/codalab-worksheets/wiki/Installing-Docker)
-- [Image](https://hub.docker.com/r/shuohang/seqmatchseq/): docker pull shuohang/seqmatchseq:1.0
-
-After installation, just run the following codes (/PATH/SeqMatchSeq need to change):
-```
-docker run -it -v /PATH/SeqMatchSeq:/opt --rm -w /opt      shuohang/seqmatchseq:1.0 /bin/bash -c "sh preprocess.sh snli"
-docker run -it -v /PATH/SeqMatchSeq:/opt --rm -w /opt/main shuohang/seqmatchseq:1.0 /bin/bash -c "th main.lua"
-```
 # Machine Comprehension Using Match-LSTM and Answer Pointer
 
 ### Requirements
@@ -94,56 +51,5 @@ docker run -it -v /PATH/SeqMatchSeq:/opt --rm -w /opt      shuohang/seqmatchseq:
 docker run -it -v /PATH/SeqMatchSeq:/opt --rm -w /opt/main shuohang/seqmatchseq:1.0 /bin/bash -c "th mainDt.lua"
 ```
 
-# A Compare-Aggregate Model for Matching Text Sequences
-### Requirements
-- [Torch7](https://github.com/torch/torch7)
-- [nn](https://github.com/torch/nn)
-- [nngraph](https://github.com/torch/nngraph)
-- [optim](https://github.com/torch/optim)
-- Python 2.7
-
-### Datasets
-- [The Stanford Natural Language Inference (SNLI) Corpus](http://nlp.stanford.edu/projects/snli/)
-- [MovieQA: Story Understanding Benchmark](http://movieqa.cs.toronto.edu/home/)
-- [InsuranceQA Corpus V1: Answer Selection Task](https://github.com/shuzi/insuranceQA)
-- [WikiQA: A Challenge Dataset for Open-Domain Question Answering](https://www.microsoft.com/en-us/research/publication/wikiqa-a-challenge-dataset-for-open-domain-question-answering/)
-- [GloVe: Global Vectors for Word Representation](http://nlp.stanford.edu/data/glove.840B.300d.zip)
-
-For now, this code only support SNLI and WikiQA data sets.
-
-### Usage
-SNLI task (The preprocessed format follows the previous description):
-```
-sh preprocess.sh snli
-cd main
-th main.lua -task snli -model compAggSNLI -comp_type submul -learning_rate 0.002 -mem_dim 150 -dropoutP 0.3 
-```
-WikiQA task:
-```
-sh preprocess.sh wikiqa (Please first dowload the file "WikiQACorpus.zip" to the path SeqMatchSeq/data/wikiqa/ through address: https://www.microsoft.com/en-us/download/details.aspx?id=52419)
-cd main
-th main.lua -task wikiqa -model compAggWikiqa -comp_type mul -learning_rate 0.004 -dropoutP 0.04 -batch_size 10 -mem_dim 150 
-```
-
-- `model` (model name) : compAggSNLI  / compAggWikiqa 
-- `comp_type` (8 different types of word comparison): submul / sub / mul / weightsub / weightmul / bilinear / concate / cos
-
-### Docker
-You may try to use Docker for running the code.
-- [Docker Install](https://github.com/codalab/codalab-worksheets/wiki/Installing-Docker)
-- [Image](https://hub.docker.com/r/shuohang/seqmatchseq/): docker pull shuohang/seqmatchseq:1.0
-
-After installation, just run the following codes (/PATH/SeqMatchSeq need to change):
-
-For SNLI:
-```
-docker run -it -v /PATH/SeqMatchSeq:/opt --rm -w /opt      shuohang/seqmatchseq:1.0 /bin/bash -c "sh preprocess.sh snli"
-docker run -it -v /PATH/SeqMatchSeq:/opt --rm -w /opt/main shuohang/seqmatchseq:1.0 /bin/bash -c "th main.lua -task snli -model compAggSNLI -comp_type submul -learning_rate 0.002 -mem_dim 150 -dropoutP 0.3"
-```
-For WikiQA
-```
-docker run -it -v /PATH/SeqMatchSeq:/opt --rm -w /opt      shuohang/seqmatchseq:1.0 /bin/bash -c "sh preprocess.sh wikiqa"
-docker run -it -v /PATH/SeqMatchSeq:/opt --rm -w /opt/main shuohang/seqmatchseq:1.0 /bin/bash -c "th main.lua -task wikiqa -model compAggWikiqa -comp_type mul -learning_rate 0.004 -dropoutP 0.04 -batch_size 10 -mem_dim 150"
-```
 # Copyright
 Copyright 2015 Singapore Management University (SMU). All Rights Reserved.
