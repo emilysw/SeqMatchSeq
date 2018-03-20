@@ -276,13 +276,15 @@ function boundaryMPtr:predict_datasetDt(dataset)
     return predictions
 end
 
-
+-- outputs record files and model data
 function boundaryMPtr:save(path, config, result, epoch)
     assert(string.sub(path,-1,-1)=='/')
+    -- example: trainedmodelpath/squad0
     local paraPath = path .. config.task .. config.expIdx
     local paraBestPath = path .. config.task .. config.expIdx .. '_best'
     local recPath = path .. config.task .. config.expIdx ..'Record.txt'
 
+    -- saves the configs
     local file = io.open(recPath, 'a')
     if epoch == 1 then
         for name, val in pairs(config) do
@@ -290,6 +292,7 @@ function boundaryMPtr:save(path, config, result, epoch)
         end
     end
 
+    -- outputs the epoch results
     file:write(config.task..': '..epoch..': ')
     for _, val in pairs(result) do
         print(val)

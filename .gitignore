@@ -1,5 +1,8 @@
 # Data
 data 
 
+# xml
+*.xml
+*.iml
 # Models
 trainedmodel/past_model

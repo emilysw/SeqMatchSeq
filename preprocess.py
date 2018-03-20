@@ -32,6 +32,8 @@ def prepSNLI():
 		fpw.close()
 		fpr.close()
 	print ('SNLI preprossing finished!')
+
+
 def prepSQuAD():
 	reload(sys)
 	sys.setdefaultencoding('utf-8')
@@ -46,9 +48,9 @@ def prepSQuAD():
 		fpw = open("data/squad/sequence/"+filename+".txt", 'w')
 		for c in js["data"]:
 			for p in c["paragraphs"]:
-				context = p["context"].split(' ')
-				context_char = list(p["context"])
-				context_pos = {}
+				# context = p["context"].split(' ')
+				# context_char = list(p["context"])
+				# context_pos = {}
 				for qa in p["qas"]:
 
 					question = word_tokenize(qa["question"])
@@ -58,7 +60,7 @@ def prepSQuAD():
 							answer = a['text'].strip()
 							answer_start = int(a['answer_start'])
 
-						#add '.' here, just because NLTK is not good enough in some cases
+						# add '.' here, just because NLTK is not good enough in some cases
 						answer_words = word_tokenize(answer+'.')
 						if answer_words[-1] == '.':
 							answer_words = answer_words[:-1]
@@ -75,16 +77,16 @@ def prepSQuAD():
 						join_a = ' '.join(answer_words)
 						join_ar = ' '.join(answer_reproduce)
 
-						#if not ((join_ar in join_a) or (join_a in join_ar)):
+						# if not ((join_ar in join_a) or (join_a in join_ar)):
 						if join_a != join_ar:
-							#print join_ar
-							#print join_a
-							#print 'answer:'+answer
+							# print join_ar
+							# print join_a
+							# print 'answer:'+answer
 							count += 1
 
 						fpw.write(' '.join(prev_context_words+left_context_words)+'\t')
 						fpw.write(' '.join(question)+'\t')
-						#fpw.write(join_a+'\t')
+						# fpw.write(join_a+'\t')
 
 						pos_list = []
 						for i in range(len(answer_words)):
@@ -101,7 +103,9 @@ def prepSQuAD():
 						fpw.write(' '.join(question)+'\n')
 
 		fpw.close()
-	print ('SQuAD preprossing finished!')
+	print ('SQuAD pre-processing finished!')
+
+
 if __name__ == "__main__":
 	task = sys.argv[1]
 	if task == "snli":
